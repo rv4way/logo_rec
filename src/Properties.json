@@ -1,0 +1,17 @@
+{
+	"PositiveGist":"../database/positive/gist/",
+	"PositiveHog":"../database/positive/hog/",
+	"NegativeHog":"../database/negative/hog/",
+	"NegativeGist":"../database/negative/gist/",
+	"RetrainNegativeGist":"../database/negative_selection/gist/",
+	"RetrainNegativeHog":"../database/negative_selection/hog/",
+	"Classifier":"../database/classifier/",
+	"ClassifierHog":"../database/classifier/hog/",
+	"ClassifierGist":"../database/classifier/gist/",
+	"Train":"../database/negative_selection/",
+	"train_tr":"../database/positive/",
+	"train_fl":"../database/negative/",
+	"ImageCsv":"../database/image_name.csv",
+	"MongoUrl":"mongodb://localhost:27017/",
+	"ImageDatabase":"ImageDatabase"
+}

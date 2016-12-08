@@ -109,6 +109,8 @@ def add_feature_to_database(name,feature,type_feat):
 
 #-- function to genreate affine transform--#    
 def generate_affine(img,name):
+    #cv2.imshow('kkkkk', img)
+    #cv2.waitKey()
     for i in range(10):
     
         
@@ -212,9 +214,9 @@ def generate_affine(img,name):
        
         #add the gist and hog feature of the image
         if s2 !=0 and s1 !=0:
-                    
-#        cv2.imshow('noise',dst2)
-        #dst2 remove black.
+            #cv2.imshow('noise',dst2)
+            #cv2.waitKey()
+            #dst2 remove black.
             gist_feat = Gist_feat_last.singleImage2(dst2)
             hog_feat = HOG_feat2.hog_call(dst2)
             gist_feat = np.concatenate((gist_feat,[1]))
@@ -261,11 +263,13 @@ def modify_database(name):
 def single_affine(img,name):
     #img = cv2.imread(path)
     #modify_database(name)
-    cv2.imwrite("/root/ideaswirw/imageprocessing/DataBase/1.png",img)
+    #cv2.imwrite("/root/ideaswirw/imageprocessing/DataBase/1.png",img)
     #print 'image is',img
     #print img.shape
     gist_feat = Gist_feat_last.singleImage2(img)
+    print gist_feat
     hog_feat = HOG_feat2.hog_call(img)
+    print hog_feat
     gist_feat = np.concatenate((gist_feat,[1]))
     hog_feat = np.concatenate((hog_feat,[1]))
     with open(feat_gist+name+'.csv', 'a') as myfile:
@@ -274,11 +278,5 @@ def single_affine(img,name):
     with open(feat_hog+name+'.csv', 'a') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(hog_feat)
-    '''
-    add_feature_to_database(name,gist_feat,"Gabor")
-    add_feature_to_database(name,hog_feat,"HOG")
-    '''
-    ret = generate_affine(img,name)
-    
+    ret = generate_affine(img,name)    
     return ret
-

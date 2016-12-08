@@ -130,8 +130,8 @@ def gen_res(final_rv, final_gist):
          
     
 def image_calc(img):
-    #cv2.imshow('Original', img)
-    #cv2.waitKey()
+    cv2.imshow('Original', img)
+    cv2.waitKey()
     try:
         correct_fea = Gist_feat_last.singleImage2(img)
         feat = HOG_feat2.hog_call(img)
@@ -151,8 +151,8 @@ def image_calc(img):
         final_gist = Label_classify(correct_fea,'batman')
         af_res = gen_res(final_rv, final_gist)
 
-        cv2.imshow('Affine', af_img)
-        cv2.waitKey()
+        #cv2.imshow('Affine', af_img)
+        #cv2.waitKey()
 
         final_res = list(set(orig_res).intersection(af_res))
         #print final_res
@@ -162,6 +162,6 @@ def image_calc(img):
         return 'Image not found'
 
 if __name__ == '__main__':
-    path = '/home/rahul/Downloads/3m_test.png'
+    path = '/home/rahul/Desktop/download (3)_png_logo_300_58110b_2.png'
     img = cv2.imread(path)
     image_calc(img)

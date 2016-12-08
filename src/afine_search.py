@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-
+import saltandpepper1
 def affine_transform(img):
 	#print profile_path, name
 	rows,cols,ch = img.shape
@@ -18,7 +18,12 @@ def affine_transform(img):
 	M = cv2.getAffineTransform(pts1,pts2)
 
 	dst = cv2.warpAffine(img,M,(cols,rows))
-	con_img = convolve_image(dst)
+	salt = saltandpepper1.noise_addition(dst)
+	cv2.imshow('salt', salt)
+	cv2.waitKey()
+	con_img = convolve_image(salt)
+	cv2.imshow('consalt', con_img)
+	cv2.waitKey()
 	return con_img
 
 

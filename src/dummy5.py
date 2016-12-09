@@ -24,6 +24,10 @@ list2 = {}
 list3 = {}
 files_name = []
 
+orgi_gist = {}
+orig_hog = {}
+aff_gist = {}
+aff_hog = {}
 
 
 
@@ -60,7 +64,7 @@ def Label_classify(feature,files1):
              final_gist[profile_id] = temp
         else:
              final_gist[profile_id] = int(1)
-    print final_gist
+    #print final_gist
     return final_gist
     
 
@@ -86,80 +90,83 @@ def Label_classify2(feature,files1):
              final_rv[profile_id] = temp
         else:
              final_rv[profile_id] = int(1)
-    print final_rv
+    #print final_rv
     return final_rv
 
 def gen_res(final_rv, final_gist):
+    #print list1
+    #print list2
      #print 'KINGKINGKINGKING', final_gist.values()
      #print 'ncjdsndjnkdnfkd', final_rv.values()
-     temp_gist = final_gist.keys()
-     temp_hog = final_rv.keys()
+    temp_gist = final_gist.keys()
+    temp_hog = final_rv.keys()
      #print temp_gist
      #print temp_hog
      #print final_gist
      #print final_rv
-     final_temp = list(set(temp_gist).intersection(temp_hog))
+    final_temp = list(set(temp_gist).intersection(temp_hog))
      #print final_temp
-     gist_count = []
-     hog_count = []
-     response = []
-     for x in final_temp:
-        gist_count.append(final_gist[x])
-        hog_count.append(final_rv[x])
-     m_gist = max(gist_count)
-     m_hog = max(hog_count)
+    gist_count = []
+    hog_count = []
+    response = []
+    for x in final_temp:
+       gist_count.append(final_gist[x])
+       hog_count.append(final_rv[x])
+    m_gist = max(gist_count)
+    m_hog = max(hog_count)
      #print gist_count
      #print hog_count
      #print m_gist
      #print m_hog
-     if m_hog > m_gist:
-          for x in final_rv:
-              com = final_rv[x]
-          if com == m_hog:
-               response.append(x)
-     elif m_gist > m_hog:
-          for x in final_gist:
+    if m_hog > m_gist:
+        for x in final_rv:
+            com = final_rv[x]
+            if com == m_hog:
+                response.append(x)
+    elif m_gist > m_hog:
+        for x in final_gist:
             com = final_gist[x]
             if com == m_gist:
                response.append(x)
-     elif m_gist == m_hog:
-          return final_temp
-     #print 'KJJHGGHJFHGDFDJGHKIULIKJGFHG',response
-     return response
+    elif m_gist == m_hog:
+        return final_temp
+    #print 'KJJHGGHJFHGDFDJGHKIULIKJGFHG',response
+    return response
            
          
     
 def image_calc(img):
-    cv2.imshow('Original', img)
-    cv2.waitKey()
-    try:
-        correct_fea = Gist_feat_last.singleImage2(img)
-        feat = HOG_feat2.hog_call(img)
-        #print 'hog',feat.shape
-        #print 'correct shape',correct_fea.shape
-        final_rv = Label_classify2(feat,'batman')
-        final_gist = Label_classify(correct_fea,'batman')
-        #print 'list',list1
-        #print '2nd list',list2
-        orig_res = gen_res(final_rv, final_gist)
+    #cv2.imshow('Original', img)
+    #cv2.waitKey()
+    correct_fea = Gist_feat_last.singleImage2(img)
+    feat = HOG_feat2.hog_call(img)
+    #print 'hog',feat.shape
+    #print 'correct shape',correct_fea.shape
+    orig_hog = Label_classify2(feat,'batman')
+    orig_gist = Label_classify(correct_fea,'batman')
+    #print 'list',list1
+    #print '2nd list',list2
+    orig_res = gen_res(orig_hog, orig_gist)
 
-        af_img = afine_search.affine_transform(img)
+    af_img = afine_search.affine_transform(img)
 
-        af_gist = Gist_feat_last.singleImage2(af_img)
-        af_hog = HOG_feat2.hog_call(af_img)
-        final_rv = Label_classify2(feat,'batman')
-        final_gist = Label_classify(correct_fea,'batman')
-        af_res = gen_res(final_rv, final_gist)
+    af_gist = Gist_feat_last.singleImage2(af_img)
+    af_hog = HOG_feat2.hog_call(af_img)
+    aff_hog = Label_classify2(feat,'batman')
+    aff_gist = Label_classify(correct_fea,'batman')
+    af_res = gen_res(aff_hog, aff_gist)
 
-        #cv2.imshow('Affine', af_img)
-        #cv2.waitKey()
+    #cv2.imshow('Affine', af_img)
+    #cv2.waitKey()
 
-        final_res = list(set(orig_res).intersection(af_res))
-        #print final_res
-        return final_res
+    final_res = list(set(orig_res).intersection(af_res))
+    print orig_hog
+    print orig_gist
+    #print final_res
+    #return final_res
 
-    except Exception,e:
-        return 'Image not found'
+    #except Exception,e:
+        #return 'Image not found'
 
 if __name__ == '__main__':
     path = '/home/rahul/Desktop/download (3)_png_logo_300_58110b_2.png'

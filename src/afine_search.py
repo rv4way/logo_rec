@@ -19,11 +19,11 @@ def affine_transform(img):
 
 	dst = cv2.warpAffine(img,M,(cols,rows))
 	salt = saltandpepper1.noise_addition(dst)
-	cv2.imshow('salt', salt)
-	cv2.waitKey()
+	#cv2.imshow('salt', salt)
+	#cv2.waitKey()
 	con_img = convolve_image(salt)
-	cv2.imshow('consalt', con_img)
-	cv2.waitKey()
+	#cv2.imshow('consalt', con_img)
+	#cv2.waitKey()
 	return con_img
 
 

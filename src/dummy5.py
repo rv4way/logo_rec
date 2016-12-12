@@ -58,14 +58,15 @@ def Label_classify(feature,files1):
             predict = np.asarray(predict)
             if predict.all()==1:  #if class is one then add it                
                 list1[files1].append(files4)
-        if final_gist.has_key(profile_id):
-             temp = final_gist[profile_id]
-             temp += 1
-             final_gist[profile_id] = temp
-        else:
-             final_gist[profile_id] = int(1)
+                if final_gist.has_key(profile_id):
+                     temp = final_gist[profile_id]
+                     temp += 1
+                     final_gist[profile_id] = temp
+                else:
+                     final_gist[profile_id] = int(1)
     #print final_gist
     return final_gist
+    #return list1
     
 
                 
@@ -84,40 +85,40 @@ def Label_classify2(feature,files1):
             if predict.all()==1:  #if class is one then add it
                 #print 'Prediction is:',files4
                 list2[files1].append(files4)
-        if final_rv.has_key(profile_id):
-             temp = final_rv[profile_id]
-             temp += 1
-             final_rv[profile_id] = temp
-        else:
-             final_rv[profile_id] = int(1)
+                if final_rv.has_key(profile_id):
+                     temp = final_rv[profile_id]
+                     temp += 1
+                     final_rv[profile_id] = temp
+                else:
+                     final_rv[profile_id] = int(1)
     #print final_rv
     return final_rv
+    #return list2
 
 def gen_res(final_rv, final_gist):
-    #print list1
-    #print list2
-     #print 'KINGKINGKINGKING', final_gist.values()
-     #print 'ncjdsndjnkdnfkd', final_rv.values()
     temp_gist = final_gist.keys()
     temp_hog = final_rv.keys()
-     #print temp_gist
-     #print temp_hog
-     #print final_gist
-     #print final_rv
     final_temp = list(set(temp_gist).intersection(temp_hog))
-     #print final_temp
+    #print temp_gist
+    #print temp_hog
+    #print final_temp
+    return final_temp
+    '''
+
     gist_count = []
     hog_count = []
     response = []
     for x in final_temp:
        gist_count.append(final_gist[x])
        hog_count.append(final_rv[x])
+    print gist_count
+    print hog_count
+
     m_gist = max(gist_count)
     m_hog = max(hog_count)
-     #print gist_count
-     #print hog_count
-     #print m_gist
-     #print m_hog
+    #print m_gist
+    #print m_hog
+    #cjxjchc
     if m_hog > m_gist:
         for x in final_rv:
             com = final_rv[x]
@@ -130,9 +131,8 @@ def gen_res(final_rv, final_gist):
                response.append(x)
     elif m_gist == m_hog:
         return final_temp
-    #print 'KJJHGGHJFHGDFDJGHKIULIKJGFHG',response
     return response
-           
+    '''           
          
     
 def image_calc(img):
@@ -144,8 +144,8 @@ def image_calc(img):
     #print 'correct shape',correct_fea.shape
     orig_hog = Label_classify2(feat,'batman')
     orig_gist = Label_classify(correct_fea,'batman')
-    #print 'list',list1
-    #print '2nd list',list2
+    #print orig_gist
+    #print orig_hog
     orig_res = gen_res(orig_hog, orig_gist)
 
     af_img = afine_search.affine_transform(img)
@@ -160,15 +160,22 @@ def image_calc(img):
     #cv2.waitKey()
 
     final_res = list(set(orig_res).intersection(af_res))
-    print orig_hog
-    print orig_gist
+    #print orig_gist
+    #print orig_hog
     #print final_res
     #return final_res
+    if len(final_res) == 0:
+        #print 'ORIG HOG'
+        #return orig_hog.keys()
+        return []
+    else:
+        print 'FINAL RES'
+        return final_res
 
     #except Exception,e:
         #return 'Image not found'
 
 if __name__ == '__main__':
-    path = '/home/rahul/Desktop/download (3)_png_logo_300_58110b_2.png'
+    path = '/home/rahul/Dropbox/Processed Logo Images/Logos Phase 2/Big Bazar/all_B/Correct/images (8)_jpg_logo_500_54661b_1.png'
     img = cv2.imread(path)
     image_calc(img)

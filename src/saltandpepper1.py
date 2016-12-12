@@ -12,18 +12,5 @@ def noise_addition(image):
                 img[i,j,:] = [255,255,255] 
                 
             if temp <0.03:
-                img[i,j,:] = [0,0,0]   
-    
-    
-    #cv2.imshow('output',img)
+                img[i,j,:] = [0,0,0]
     return img
-    
-'''    
-def start(path):
-    img = cv2.imread("C:\\Users\\4way\\input3.jpg")
-    cv2.imshow('input',img)
-    noise_addition(img)
-    
-    
-start()
-'''

@@ -450,14 +450,14 @@ def allFeat():
                 if 'Correct' in subdir1 or 'False' in subdir1 or 'Others' in subdir1:
                     
                     for subdir2,dirs2,files2 in os.walk(subdir1):
-                        print subdir2
+                        #print subdir2
                         for subs,dirs,files3 in os.walk(subdir2):
                             
                             for file1 in files3:          #every file in subdirectry
                                 if '.jpg' in file1 or '.png' in file1:   #checking the extension of file.
                                     count = count+1
                                     newdir1 = subdir2+"\\"+file1   #making the image full path
-                                    print newdir1
+                                    #print newdir1
                                     img=cv2.imread(newdir1)  #reading the iamge
                                     #cv2.imshow('image1',img)
                                     param  = {'imagesize':[256, 256],'orientationPerScale':[8, 8, 8, 8],'numberBlocks':4,'fc_prefilt':4} #settign parameter
@@ -465,9 +465,9 @@ def allFeat():
                                     with open(subdir2+"\\"+'feature.csv', 'a') as myfile:
                                         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                                         wr.writerow(gist)
-                                    print count
+                                    #print count
                 
-    print 'done'
+    #print 'done'
 
 
 def singleImage2(img):
@@ -487,7 +487,7 @@ def singleImage2(img):
     #print "shape :",len(gist)
     
     #print 'done'
-    print gist
+    #print gist
     return gist 
     
 #g = singleImage('_logo_200_510r.png')
@@ -497,7 +497,7 @@ def single_image():
     count =j = 0
     for i in list1:
         new_dir = rootdir+'\\'+i
-        print new_dir
+        #print new_dir
         img_read =cv2.imread(new_dir)
         feature_gist = singleImage2(img_read)
         count = count+1
@@ -509,4 +509,4 @@ def single_image():
         with open(file, 'a') as myfile:
             wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
             wr.writerow(feature_gist)
-        print 'done with',i
+        #print 'done with',i

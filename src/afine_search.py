@@ -10,8 +10,8 @@ def affine_transform(img):
 
 	pts1 = np.float32([[50,50],[200,50],[50,200]])
 
-	x_rot = x_rot + 10
-	y_rot = y_rot + 10
+	x_rot = x_rot + 20
+	y_rot = y_rot + 20
 
 	pts2 = np.float32([[x_rot, x_rot],[200,50],[x_rot,y_rot]])
 
@@ -28,8 +28,7 @@ def affine_transform(img):
 
 
 	#cv2.imshow('AFFINE', dst)
-	#cv2.waitKey()	
-
+	#cv2.waitKey()
 
 def convolve_image(img):
 

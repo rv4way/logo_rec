@@ -124,6 +124,7 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
             #print train_set[count1,:shape_y]
             count2=count2+1
             count1 = count1+1
+
         elif i==1 and count1<rows:
             
             prev_true[count3,:] =  train_set[count1,:]
@@ -421,10 +422,7 @@ def classifier(training_data,data_false,directory,priori_prob,shape_y,f_type):
         os.stat(Location)
     except :
         os.mkdir(Location)
-              
-               
-    
-    
+
     save_location = Location+'/'+directory+'_'+str(0)+'.pkl'
     #print 'shape',test_data.shape
     joblib.dump(est, save_location,compress=9)#only save the classifier not the data..
@@ -457,7 +455,7 @@ def load_new(name,f_type):
     randomForest(data_correct,data_false,name,shape_y-1,f_type)
 #start()
 def start_1(name): #start from here
-    load_new(name,'Gist')
-    load_new(name,'Hog')
+    load_new(name,'gist')
+    load_new(name,'hog')
 #load_new(name,f_type) #load the feature...
 

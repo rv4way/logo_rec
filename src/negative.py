@@ -6,6 +6,7 @@ import HOG_feat2
 import pandas as pd
 import random
 from pymongo import MongoClient
+
 '''this file will generate the negative feature for the new images which are comming in from the server'''
 
 

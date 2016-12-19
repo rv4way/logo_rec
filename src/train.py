@@ -7,6 +7,7 @@ import pandas as pd   #use pip install pandas to install this
 import os
 from sklearn.externals import joblib  #save the data
 import random,json
+
 ''' this will create the classifier for the new image that is comming in from the server using 
 the negative search approach'''
 
@@ -111,8 +112,7 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
     prev_true = np.zeros((rows,columns))
     if new_false_new.ndim ==1:
         new_row=new_false_new.shape
-    else:
-        
+    else:        
         new_row,new_col = new_false_new.shape #shape of new false
     count1=count2=count3=0
 
@@ -130,6 +130,7 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
             #print train_set[count1,:shape_y]
             count3=count3+1
             count1 = count1+1
+    
     '''old true and false matrices'''
     
     prev_true = np.asarray(prev_true[:count3,:]) #old true value        
@@ -184,9 +185,7 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
         elif diff<0:
             print 'triming data'
             diff =  abs(diff)
-            prev_true = np.asarray(prev_true[:int(true_row)-diff,:])
-            
-            
+            prev_true = np.asarray(prev_true[:int(true_row)-diff,:])            
         
         p_tx,pt_y = prev_true.shape
         
@@ -206,13 +205,10 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
         false_data= np.concatenate((prev_false,new_false_new)) #add the previous false data to new false data
         f_x,f_y = false_data.shape 
         diff = int(f_x)-int(true_row)
-        print '2nd'
         if diff>0:
             perc = diff/true_row
             p1 = int(perc)
-            print "prec34",p1
 	    for i in range(p1+2):
-                print 'loop here '
                 prev_true = np.concatenate((prev_true,prev_true))
                         
         p_tx,pt_y = prev_true.shape

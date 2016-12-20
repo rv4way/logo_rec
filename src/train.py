@@ -7,7 +7,6 @@ import pandas as pd   #use pip install pandas to install this
 import os
 from sklearn.externals import joblib  #save the data
 import random,json
-
 ''' this will create the classifier for the new image that is comming in from the server using 
 the negative search approach'''
 
@@ -112,7 +111,8 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
     prev_true = np.zeros((rows,columns))
     if new_false_new.ndim ==1:
         new_row=new_false_new.shape
-    else:        
+    else:
+        
         new_row,new_col = new_false_new.shape #shape of new false
     count1=count2=count3=0
 
@@ -124,14 +124,12 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
             #print train_set[count1,:shape_y]
             count2=count2+1
             count1 = count1+1
-
         elif i==1 and count1<rows:
             
             prev_true[count3,:] =  train_set[count1,:]
             #print train_set[count1,:shape_y]
             count3=count3+1
             count1 = count1+1
-    
     '''old true and false matrices'''
     
     prev_true = np.asarray(prev_true[:count3,:]) #old true value        
@@ -186,7 +184,9 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
         elif diff<0:
             print 'triming data'
             diff =  abs(diff)
-            prev_true = np.asarray(prev_true[:int(true_row)-diff,:])            
+            prev_true = np.asarray(prev_true[:int(true_row)-diff,:])
+            
+            
         
         p_tx,pt_y = prev_true.shape
         
@@ -206,10 +206,13 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
         false_data= np.concatenate((prev_false,new_false_new)) #add the previous false data to new false data
         f_x,f_y = false_data.shape 
         diff = int(f_x)-int(true_row)
+        print '2nd'
         if diff>0:
             perc = diff/true_row
             p1 = int(perc)
+            print "prec34",p1
 	    for i in range(p1+2):
+                print 'loop here '
                 prev_true = np.concatenate((prev_true,prev_true))
                         
         p_tx,pt_y = prev_true.shape
@@ -233,7 +236,7 @@ def re_train(new_false_new,new_false_old,train_set,labels,shape_y,new_comp2,num1
     print 'labels and data',labels_new.shape,new_train.shape 
     #X_train,y_train,f = split_new(new_train, labels_new, 0.80)
     
-    est = RandomForestClassifier(n_estimators =10,max_features='auto',max_depth=None,min_samples_split=2,min_samples_leaf=1,min_weight_fraction_leaf=0,max_leaf_nodes=None,n_jobs=1)
+    est = RandomForestClassifier(n_estimators =20,max_features='auto',max_depth=None,min_samples_split=2,min_samples_leaf=1,min_weight_fraction_leaf=0,max_leaf_nodes=None,n_jobs=1)
     #--fitting data and labels--#
     est.fit(new_train,labels_new)
     ##--making the falsetestdata--##
@@ -411,7 +414,7 @@ def classifier(training_data,data_false,directory,priori_prob,shape_y,f_type):
     y_train = final_labels
     temp1,temp2 = X_train.shape
     #print 'teri makk',temp1, temp2
-    est = RandomForestClassifier(n_estimators =10,max_features='auto',max_depth=None,min_samples_split=2,min_samples_leaf=1,min_weight_fraction_leaf=0,max_leaf_nodes=None,n_jobs=1)
+    est = RandomForestClassifier(n_estimators =20,max_features='auto',max_depth=None,min_samples_split=2,min_samples_leaf=1,min_weight_fraction_leaf=0,max_leaf_nodes=None,n_jobs=1)
     #--fitting data and labels--#
     est.fit(X_train,y_train)      #make trees from trainning data and labels
     #x_train is the training data, and y_train are there labels.
@@ -422,7 +425,10 @@ def classifier(training_data,data_false,directory,priori_prob,shape_y,f_type):
         os.stat(Location)
     except :
         os.mkdir(Location)
-
+              
+               
+    
+    
     save_location = Location+'/'+directory+'_'+str(0)+'.pkl'
     #print 'shape',test_data.shape
     joblib.dump(est, save_location,compress=9)#only save the classifier not the data..
@@ -455,7 +461,7 @@ def load_new(name,f_type):
     randomForest(data_correct,data_false,name,shape_y-1,f_type)
 #start()
 def start_1(name): #start from here
-    load_new(name,'gist')
-    load_new(name,'hog')
+    load_new(name,'Gist')
+    load_new(name,'Hog')
 #load_new(name,f_type) #load the feature...
 

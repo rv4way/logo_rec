@@ -14,8 +14,10 @@ import io
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
+import face_src
 from operator import is_not
 from functools import partial
+import re_train
 '''using celery tasks queue to queue the tsks and images'''
 
 
@@ -53,18 +55,19 @@ db_count = db.Image_count
 def my_background_task(path1, name): #this is the celery task this will execute the tasks in the background
 	
 	try:
-		#logger.info('starting function %s'%(name))
+		logger.info('starting function %s'%(name))
 		#print 'starting with',name
 		v = afinr_crop_custom1.single_affine(path1,name)
-		#logger.info('v %s'%(name))
+		logger.info('v %s'%(name))
 		negative.start(name,v+1)
-		#logger.info('23v %s'%(name))
+		logger.info('23v %s'%(name))
 		train.start_1(name)
 		update_idcsv(name)
+		re_train.start()
 		#print 'completed with',name
-		#logger.info("completed %s"%(name))
+		logger.info("completed %s"%(name))
 	except Exception,e:
-		print 'exception',str(e)
+		print 'exceptiom',str(e)
 	return "done"
 
 
@@ -97,9 +100,23 @@ def hello():
 
 			img = cv2.imdecode(data1, color_image_flag) #img is the image
 			v = dummy5.image_calc(img)
+
+			#list2 = v.values()
+			#out = list2[0]
+			#new_out = []
+			#for x in range(len(out)):
+				#print out[x]
+				#if out[x] == "None":
+					#continue
+				#else:
+					#new_out.append(out[x])
+
+			
+			#out = str(out)
+			#new_out = json.dumps(new_out)
 			new_out = v
-			#print new_out
-			#print len(new_out)
+			print new_out
+			print len(new_out)
 			if len(new_out) == 0:
 				new_out = json.dumps(new_out)
 				ret_val={'message':'images not found','status':0,'data':new_out}
@@ -173,7 +190,9 @@ def add():#add the image to our classifier
 			s4 = s1.split(':')[1].split('>')[0]'''
 			#print 'name is ',name
 			
-			my_background_task.delay(img,s4)	    
+			my_background_task.delay(img,s4)
+			
+	    
 	
 			ret_val={'message':'image queued for adding.','status':2,'data':header_req }
 			return 	jsonify(**ret_val)

@@ -7,6 +7,8 @@ import cv2
 import json
 from pymongo import MongoClient
 import afine_search
+import histogram
+from scipy.misc import imresize
 with open('Properties.json', 'r') as fp:
     data = json.load(fp)
 
@@ -102,50 +104,18 @@ def gen_res(final_rv, final_gist):
     #print temp_gist
     #print temp_hog
     #print final_temp
-    return final_temp
-    '''
-
-    gist_count = []
-    hog_count = []
-    response = []
-    for x in final_temp:
-       gist_count.append(final_gist[x])
-       hog_count.append(final_rv[x])
-    print gist_count
-    print hog_count
-
-    m_gist = max(gist_count)
-    m_hog = max(hog_count)
-    #print m_gist
-    #print m_hog
-    #cjxjchc
-    if m_hog > m_gist:
-        for x in final_rv:
-            com = final_rv[x]
-            if com == m_hog:
-                response.append(x)
-    elif m_gist > m_hog:
-        for x in final_gist:
-            com = final_gist[x]
-            if com == m_gist:
-               response.append(x)
-    elif m_gist == m_hog:
-        return final_temp
-    return response
-    '''           
+    return final_temp      
          
     
 def image_calc(img):
-    #cv2.imshow('Original', img)
-    #cv2.waitKey()
+
+    img = imresize(img, (47*2, 55*2), interp = 'bicubic')
     correct_fea = Gist_feat_last.singleImage2(img)
     feat = HOG_feat2.hog_call(img)
-    #print 'hog',feat.shape
-    #print 'correct shape',correct_fea.shape
+
     orig_hog = Label_classify2(feat,'batman')
     orig_gist = Label_classify(correct_fea,'batman')
-    #print orig_gist
-    #print orig_hog
+
     orig_res = gen_res(orig_hog, orig_gist)
 
     af_img = afine_search.affine_transform(img)
@@ -156,26 +126,25 @@ def image_calc(img):
     aff_gist = Label_classify(correct_fea,'batman')
     af_res = gen_res(aff_hog, aff_gist)
 
-    #cv2.imshow('Affine', af_img)
-    #cv2.waitKey()
-
     final_res = list(set(orig_res).intersection(af_res))
-    #print orig_gist
-    #print orig_hog
-    #print final_res
-    #return final_res
-    if len(final_res) == 0:
-        #print 'ORIG HOG'
-        #return orig_hog.keys()
-        return []
-    else:
-        print 'FINAL RES'
-        return final_res
 
-    #except Exception,e:
-        #return 'Image not found'
+    final_response = histogram.search_hist(final_res, img)
+    return final_response
 
+def search(img_arr):
+
+    res1 = image_calc(img_arr)
+    in_logo = afine_search.inside_logo(img)
+    
+    res2 = image_calc(in_logo)
+
+    res3 = list(set(res1).intersection(res2))
+
+    print res3
+
+'''
 if __name__ == '__main__':
-    path = '/home/rahul/Dropbox/Processed Logo Images/Logos Phase 2/Big Bazar/all_B/Correct/images (8)_jpg_logo_500_54661b_1.png'
+    path = '/home/rahul/Dropbox/Processed Logo Images/Logos Phase 2/Budweiser/all_B/Correct/download_jpg_logo_300_56217b_1.png'
     img = cv2.imread(path)
-    image_calc(img)
+    search(img)
+'''

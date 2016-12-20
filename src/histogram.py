@@ -88,7 +88,7 @@ def search_hist(profile_id, img_arr):
 		score = compare_hist(file_path, img_arr)
 		if score == 1:
 			response.append(x)
-	#print response
+	print response
 	return response
 
 
@@ -98,7 +98,7 @@ def compare_hist(file_path, img_arr):
 		hist = cPickle.load(file_data)
 		return hist
 
-	front_img, back_img, top_img, bottom_img = split_img(img_arr)
+	#front_img, back_img, top_img, bottom_img = split_img(img_arr)
 	result = []
 
 	hist_list = os.listdir(file_path)
@@ -124,25 +124,25 @@ def compare_hist(file_path, img_arr):
 	bottom_hist = read_pkl(bottom)
 	img_hist = read_pkl(img_hist)
 
-	front_hist_comp = calc_hist(front_img)
-	back_hist_comp = calc_hist(back_img)
-	top_hist_comp = calc_hist(top_img)
-	bottom_hist_comp = calc_hist(bottom_img)
+	#front_hist_comp = calc_hist(front_img)
+	#back_hist_comp = calc_hist(back_img)
+	#top_hist_comp = calc_hist(top_img)
+	#bottom_hist_comp = calc_hist(bottom_img)
 	img_hist_comp = calc_hist(img_arr)
 
 	distance = cv2.compareHist(img_hist, img_hist_comp,0)
 	result.append(distance)
 
-	distance = cv2.compareHist(front_hist, front_hist_comp,0)
+	distance = cv2.compareHist(front_hist, img_hist_comp,0)
 	result.append(distance)
 
-	distance = cv2.compareHist(back_hist, back_hist_comp,0)
+	distance = cv2.compareHist(back_hist, img_hist_comp,0)
 	result.append(distance)
 
-	distance = cv2.compareHist(top_hist, top_hist_comp,0)
+	distance = cv2.compareHist(top_hist, img_hist_comp,0)
 	result.append(distance)
 
-	distance = cv2.compareHist(bottom_hist, bottom_hist_comp,0)
+	distance = cv2.compareHist(bottom_hist, img_hist_comp,0)
 	result.append(distance)
 
 	count = 0
@@ -155,9 +155,11 @@ def compare_hist(file_path, img_arr):
 	else:
 		return int(0)
 
+'''
 if __name__ == '__main__':
 	path = '/home/rahul/Dropbox/Processed Logo Images/Logos Phase 1/3M/Correct/3M_Logo_K_13mm_jpg_logo_300_570r_1.png'
 	img_arr = cv2.imread(path)
 	search_hist(['sjjhjshd'], img_arr)
 	#split_img(img_arr)
 	#add_hist(img_arr, 'sjjhjshd')
+'''

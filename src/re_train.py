@@ -5,7 +5,7 @@ import train
 
 def start():
 
-	positive = '../DataBase/positiveositive'
+	positive = '../DataBase/Positive'
 	pos_gist = os.path.join(positive, str('Gist'))
 	gist_list = os.listdir(pos_gist)
 	hog_list = os.listdir(os.path.join(positive, str('Hog')))

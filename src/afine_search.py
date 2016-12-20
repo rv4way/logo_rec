@@ -38,3 +38,11 @@ def convolve_image(img):
 
 	new_img = cv2.filter2D(img,-1,kernel)
 	return new_img
+
+def inside_logo(img_arr):
+
+	x, y, z = img_arr.shape
+	x1 = int(x*0.2)
+	y1 = int(y*0.2)
+	in_logo = img_arr[x1:x-x1, y1:y-y1]
+	return in_logo

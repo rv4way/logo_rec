@@ -6,7 +6,6 @@ import HOG_feat2
 import pandas as pd
 import random
 from pymongo import MongoClient
-
 '''this file will generate the negative feature for the new images which are comming in from the server'''
 
 
@@ -81,11 +80,8 @@ def file_find(rootdir):
 def random_dir(dir_false,name): #return the random file
 	
 	rem = name+'.csv'
-	#print 'NAME', rem
-	#print 'TATA1'
 
 	dir12 = dir_false
-	#print 'dir12', dir12
 	list1 = os.listdir(dir12)
 	
 	l = list1.remove(rem)
@@ -94,9 +90,7 @@ def random_dir(dir_false,name): #return the random file
 	r = random.randint(0,length1-1)
 	#print 'r is',r
 	temp1 = list1[r]
-	#print 'TATA2'
-	temp = dir12+temp1
-	#print temp
+	temp = dir12+'/'+temp1
 	#print 'chosen file is',temp
 	return temp
 '''create the -ve HOG and Gist feature for training the 1st classifier'''
@@ -104,7 +98,6 @@ def create_csv(name,number):
 	count = 0
 	for i in range(number):
 		falseImage = random_dir(feat_gist,name)
-		print 'dsjsdnjndjvnsdjknsd', falseImage
         
         
 		feat_neg = pd.read_csv(falseImage,sep=',',header=None)

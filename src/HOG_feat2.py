@@ -76,3 +76,4 @@ def hog_call(image):
     feat = np.concatenate((feat,feat3))
      
     return feat #feat is the feature of image
+    
